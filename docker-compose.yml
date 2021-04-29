@@ -1,0 +1,20 @@
+version: '3.8'
+services:
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - ${DOCKER_DB_PORT}:${DOCKER_DB_PORT}
+
+  web:
+    build:
+      context: ./
+    volumes:
+      - .:/src
+    command: npm start
+    ports:
+      - ${DOCKER_APP_PORT}:${SERVER_PORT}
+    expose:
+      - ${DOCKER_APP_PORT}

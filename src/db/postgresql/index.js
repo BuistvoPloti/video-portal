@@ -1,5 +1,5 @@
 const { Pool } = require('pg');
-const DATABASE_URL = 'postgres://postgres:denis126478712@127.0.0.1:5432/VideoPlatform';
+const { db: { databaseURL } } = require('../../config');
 
 const connectionPool = (() => {
   let isDbConnected = false;
@@ -10,7 +10,7 @@ const connectionPool = (() => {
     }
 
     pool = new Pool({
-      connectionString: DATABASE_URL
+      connectionString: databaseURL
     });
     isDbConnected = true;
     return pool;
