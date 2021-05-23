@@ -1,6 +1,4 @@
-const getObjectPropertyOrReturnEmptyString = (object, property) => {
-  return object[property] || '';
-};
+const getObjectPropertyOrReturnEmptyString = (object, property) => object[property] || '';
 
 const formatUrl = (rawUrl) => {
   const character = '/';
@@ -10,18 +8,18 @@ const formatUrl = (rawUrl) => {
     character, rawUrl.slice(insertIndex)
   ].join('');
   return formattedCallbackURL;
-}
+};
 
 const buildQueryPartSequentialArguments = (data) => {
-  let resultQueryPart = ''
+  let resultQueryPart = '';
   const dataArray = Object.keys(data);
   let iterations = dataArray.length;
 
   for (const [index, value] of dataArray.entries()) {
-    resultQueryPart += value + ` = $${index+1}${!--iterations ? '': ', '}`
+    resultQueryPart += `${value} = $${index + 1}${!--iterations ? '' : ', '}`;
   }
   return resultQueryPart;
-}
+};
 
 module.exports = {
   getObjectPropertyOrReturnEmptyString,

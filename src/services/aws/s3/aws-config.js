@@ -10,8 +10,8 @@ AWS.config.update({
   accessKeyId,
   secretAccessKey,
   region,
-})
+});
 
 module.exports = {
   AWS,
-}
+};

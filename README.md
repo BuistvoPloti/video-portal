@@ -12,4 +12,12 @@ basic *essential* variables:
     DOCKER_DB_PORT='5432'
     DEV_DB_URL='postgres://postgres:postgres@postgres:5432/postgres'
 
+To run 'prisma' migrations manually:
+
+    prisma migrate dev
+
+To run 'node-postgres' migrations manually:
+
+    npm run pg-migrations
+
     

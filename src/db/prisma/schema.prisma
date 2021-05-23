@@ -1,0 +1,45 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = env("PRISMA_CLIENT_PROVIDER")
+}
+
+model Video {
+  video_id         Int    @id @default(autoincrement())
+  user             User   @relation(fields: [user_id], references: [user_id])
+  user_id          Int
+  bucket_file_path String
+
+  @@map(name: "videos")
+}
+
+model User {
+  user_id  Int          @id @default(autoincrement())
+  username String       @unique
+  email    String       @unique
+  password String
+  salt     String
+  verified Boolean
+  role     Role         @default(editor)
+  videos   Video[]
+  pending  PendingUser?
+
+  @@map(name: "users")
+}
+
+model PendingUser {
+  pending_user_id   Int    @id @default(autoincrement())
+  user              User   @relation(fields: [user_id], references: [user_id])
+  user_id           Int
+  confirmation_code String
+
+  @@map(name: "pending_users")
+}
+
+enum Role {
+  editor
+  admin
+}

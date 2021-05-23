@@ -1,0 +1,48 @@
+{
+    "plugins": [
+        "security"
+    ],
+    "extends": [
+        "airbnb-base",
+        "plugin:security/recommended",
+        "eslint:recommended"
+    ],
+    "env": {
+        "es6": true,
+        "node": true,
+        "jest": true
+    },
+    "parserOptions": {
+        "ecmaVersion": 2018,
+        "sourceType": "module"
+    },
+    "rules": {
+        "quotes": ["error", "single"],
+        "comma-dangle": "off",
+        "no-console": "off",
+        "security/detect-non-literal-fs-filename": "off",
+        "import/no-dynamic-require": "off",
+        "import/extensions": "off",
+        "import/prefer-default-export": "off",
+        "camelcase": "off",
+        "global-require": "off",
+        "consistent-return": "warn",
+        "arrow-body-style": 0,
+        "no-unused-vars": "warn",
+        "no-underscore-dangle": 0,
+        "linebreak-style": 0,
+        "max-len": [
+            "warn",
+            120
+        ],
+        "object-shorthand": "off",
+        "object-curly-newline": "off",
+        "arrow-parens": [
+            2,
+            "as-needed",
+            {
+                "requireForBlockBody": true
+            }
+        ]
+    }
+}

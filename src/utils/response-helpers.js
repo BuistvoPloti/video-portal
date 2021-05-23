@@ -1,15 +1,15 @@
-const handleResponse = ( res, code, body ) => {
+const handleResponse = (res, code, body) => {
   res.status(code);
   return res.json(body);
 };
 
-const handleSuccessResponse = (data, res, code) => {
+const sendSuccessResponse = (data, res, code) => {
   const responseBody = { data };
   const statusCode = code || 200;
   return handleResponse(res, statusCode, responseBody);
 };
 
-const handleErrorResponse = (res, error, code) => {
+const sendErrorResponse = (res, error, code) => {
   const status = code || 500;
   const detail = error.message || 'Internal server error';
   const responseBody = {
@@ -21,13 +21,7 @@ const handleErrorResponse = (res, error, code) => {
   return handleResponse(res, status, responseBody);
 };
 
-const throwCustomException = (message) => {
-  throw new Error(message || 'Internal server error');
-};
-
 module.exports = {
-  handleSuccessResponse,
-  handleErrorResponse,
-  throwCustomException
+  sendSuccessResponse,
+  sendErrorResponse,
 };
-

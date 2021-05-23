@@ -1,20 +1,22 @@
 version: '3.8'
 services:
   postgres:
-    image: postgres
+    image: postgres:latest
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     ports:
-      - ${DOCKER_DB_PORT}:${DOCKER_DB_PORT}
+      - ${DOCKER_DB_PORT:-5432}:${DOCKER_DB_PORT:-5432}
 
   web:
     build:
       context: ./
+    depends_on:
+      - postgres
     volumes:
       - .:/src
     command: npm start
     ports:
-      - ${DOCKER_APP_PORT}:${SERVER_PORT}
+      - ${SERVER_PORT:-8081}:${SERVER_PORT:-8081}
     expose:
-      - ${DOCKER_APP_PORT}
+      - ${SERVER_PORT:-8081}

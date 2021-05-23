@@ -1,35 +1,38 @@
 const jwt = require('jsonwebtoken');
-const { errorLogger } = require("../utils/logger-wrappers");
-const { handleErrorResponse } = require("../utils/response-helpers");
+const {
+  UserIsNotAuthorizedException,
+  JsonWebTokenDefaultException
+} = require('../exceptions/exceptions');
+const { usersService } = require('../services');
+const { sendErrorResponse } = require('../utils/response-helpers');
 const {
   application: { tokenSecret },
-} = require("../config");
+} = require('../config');
 
-const auth = (req, res, next) => {
-  const authHeader = req.headers['authorization'];
+const auth = async (req, res, next) => {
+  const authHeader = req.headers.authorization;
   const token = authHeader && authHeader.split(' ')[1];
-  if (token == null) {
-    const error = {
-      message: 'User is not authorized'
-    };
-    const code = 403;
-    errorLogger(error);
-    return handleErrorResponse(res, error, code);
+  if (!token) {
+    const error = new UserIsNotAuthorizedException();
+    const { code } = error;
+    sendErrorResponse(res, error, code);
+    return next(error);
   }
 
-  jwt.verify(token, tokenSecret, (err, user) => {
-    if (err) {
-      const error = {
-        message: 'Token is not valid'
-      };
-      const code = 403;
-      errorLogger(error);
-      return handleErrorResponse(res, error, code);
+  try {
+    const verificationResponse = jwt.verify(token, tokenSecret);
+    if (!verificationResponse) {
+      throw new JsonWebTokenDefaultException();
     }
-
+    const { user_id } = verificationResponse;
+    const user = await usersService.getUserWith2faCode(user_id);
     req.user = user;
-    return next();
-  });
+  } catch (error) {
+    const code = 400;
+    sendErrorResponse(res, error, code);
+    return next(error);
+  }
+  return next();
 };
 
 module.exports = {
